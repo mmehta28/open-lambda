@@ -63,6 +63,10 @@ type Config struct {
 	Sandbox_config any `json:"sandbox_config"`
 
 	Docker   DockerConfig   `json:"docker"`
+	/////////////
+	Seal_priority string `json:"seal_priority"`
+    Function_name string `json:"function_name"`
+	/////////////
 	Limits   LimitsConfig   `json:"limits"`
 	Features FeaturesConfig `json:"features"`
 	Trace    TraceConfig    `json:"trace"`
@@ -241,6 +245,8 @@ func getDefaultConfigForPatching(olPath string) (*Config, error) {
 		Docker: DockerConfig{
 			Base_image: "ol-min",
 		},
+		Seal_priority: "0",
+        Function_name: "nil",
 		Limits: LimitsConfig{
 			Procs:               10,
 			Mem_mb:              50,

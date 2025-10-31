@@ -116,6 +116,10 @@ func (pool *DockerPool) Create(parent Sandbox, isLeaf bool, codeDir, scratchDir 
 				Image:  common.Conf.Docker.Base_image,
 				Labels: pool.labels,
 				Env:    []string{"PYTHONPATH=" + strings.Join(pkgDirs, ":")},
+				Annotations: map[string]string{
+                    "io.alps.priority":      common.Conf.Seal_priority,
+                    "io.alps.function_name": common.Conf.Function_name,
+                },
 			},
 			HostConfig: &docker.HostConfig{
 				Binds:            volumes,
