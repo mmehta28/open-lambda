@@ -109,17 +109,31 @@ func (pool *DockerPool) Create(parent Sandbox, isLeaf bool, codeDir, scratchDir 
 	procLimit := int64(common.Conf.Limits.Procs)
 	swappiness := int64(common.Conf.Limits.Swappiness)
 	cpuPercent := int64(common.Conf.Limits.CPU_percent)
+	containerLabels := make(map[string]string)
+    
+    // Copy all the default pool labels
+    for k, v := range pool.labels {
+        containerLabels[k] = v
+    }
+	priority := meta.Seal_priority
+	if priority == "" {
+		priority = "0" // Default priority
+	}
+
+	func_name := meta.Function_name
+	if func_name == "" {
+		func_name = "unknown" // Default name
+	}
+    // Add our new priority labels
+    containerLabels["io.alps.priority"] = meta.Seal_priority
+    containerLabels["io.alps.function_name"] = meta.Function_name
 	container, err := pool.client.CreateContainer(
 		docker.CreateContainerOptions{
 			Config: &docker.Config{
 				Cmd:    []string{"/spin"},
 				Image:  common.Conf.Docker.Base_image,
-				Labels: pool.labels,
+				Labels: containerLabels,
 				Env:    []string{"PYTHONPATH=" + strings.Join(pkgDirs, ":")},
-				Annotations: map[string]string{
-                    "io.alps.priority":      common.Conf.Seal_priority,
-                    "io.alps.function_name": common.Conf.Function_name,
-                },
 			},
 			HostConfig: &docker.HostConfig{
 				Binds:            volumes,

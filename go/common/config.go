@@ -234,7 +234,7 @@ func getDefaultConfigForPatching(olPath string) (*Config, error) {
 		// file:// for local filesystem, s3:// for AWS S3, gs:// for Google Cloud Storage.
 		// Default to local file registry
 		Registry:          "file://" + registryDir,
-		Sandbox:           "sock",
+		Sandbox:           "docker",
 		Log_output:        true,
 		Pkgs_dir:          packagesDir,
 		Sandbox_config:    map[string]any{},
@@ -256,7 +256,7 @@ func getDefaultConfigForPatching(olPath string) (*Config, error) {
 			Swappiness:          0,
 		},
 		Features: FeaturesConfig{
-			Import_cache:        "tree",
+			Import_cache:        "",
 			Downsize_paused_mem: true,
 			Enable_seccomp:      true,
 		},

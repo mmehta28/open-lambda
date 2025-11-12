@@ -89,6 +89,8 @@ type SandboxMeta struct {
 	Imports    []string
 	MemLimitMB int
 	CPUPercent int
+	Seal_priority string `json:"seal_priority"`
+	Function_name string `json:"function_name"`
 }
 
 type SandboxError string
